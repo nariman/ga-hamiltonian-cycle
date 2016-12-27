@@ -22,7 +22,8 @@ void inthand(int signum) {
 
 
 int main() {
-    signal(SIGINT, inthand);
+
+    signal(SIGINT, inthand); //CTRL + C = STOP
 
     Graph *graph = generate(10, 1000);
     graph->print();
@@ -33,7 +34,7 @@ int main() {
     gen->print();
 
     while (!stop) {
-//        gen = process(gen);
+        gen = process(gen);
     }
 
     cout << "We're here";
