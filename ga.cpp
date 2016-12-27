@@ -78,5 +78,37 @@ Generation *process(Generation *generation) {
 //        this.genomListOffsprings[i] = this.genomListParents[l].clone();
 //    }
 //    break;
+
+    /*
+     * newGeneration
+     *
+     * repeat (2 * N) {
+     *     CHromo1 = selection
+     *     CHromo2 = selection
+     *
+     *     CHromo1 == CHromo2 ??
+     *     true: CHromo2 = selection
+     *
+     *     newCHromo = CHromo1 x CHromo2
+     *
+     *     with probability:
+     *         newCHromo = mutation(newCHromo)
+     *
+     *     newGeneration += newCHromo
+     * }
+     *
+     * crossover(CHromo1, CHromo2) {
+     *     val method = rand(dawdmawodawodawopdkawpdka)
+     *
+     *     1-razrez
+     *     2-razrez
+     *     1-swap
+     *     k-swap
+     * }
+     *
+     * mutation(CHromo) {
+     *     return rodit' mutanta
+     * }
+     */
 }
 
