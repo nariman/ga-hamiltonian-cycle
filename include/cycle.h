@@ -10,6 +10,8 @@
 
 
 class Cycle {
+private:
+    int mutations;
 public:
     Graph* graph;
     long length;

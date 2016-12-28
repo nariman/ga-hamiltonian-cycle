@@ -28,7 +28,7 @@ void inthand(int signum) {
 int main() {
     signal(SIGINT, inthand); //CTRL + C = STOP
 
-    Graph* graph = generate_random_graph(20, 1000);
+    Graph* graph = generate_random_graph(10, 1000);
     graph->repr();
 
     cout << endl << endl;

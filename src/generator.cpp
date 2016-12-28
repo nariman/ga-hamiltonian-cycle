@@ -4,11 +4,12 @@
  */
 
 #include <ctime> // time
-#include <random> // random_device, mt19937, uniform_int_distribution
+#include <random> // uniform_int_distribution
 
 #include "cycle.h"
 #include "generation.h"
 #include "graph.h"
+#include "twister.h"
 
 using namespace std;
 
@@ -16,15 +17,11 @@ using namespace std;
 Graph* generate_random_graph(int size, long max_weight) {
     Graph* graph = new Graph(size);
 
-    random_device random;
-    mt19937 gen(random());
     uniform_int_distribution<> dist(1, max_weight);
-
-    gen.seed(time(0));
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < i; j++) {
-            graph->matrix[i][j] = graph->matrix[j][i] = dist(gen);
+            graph->matrix[i][j] = graph->matrix[j][i] = dist(*get_wersenne_twister());
         }
 
         graph->matrix[i][i] = 0;
@@ -36,11 +33,6 @@ Graph* generate_random_graph(int size, long max_weight) {
 Generation* generate_random_generation(Graph* graph) {
     int log_size = (int) log((double) graph->size);
 
-    random_device random;
-    mt19937 gen(random());
-
-    gen.seed(time(0));
-
     Cycle** cycles = new Cycle*[log_size];
 
     for (int i = 0; i < log_size; i++) {
@@ -51,7 +43,7 @@ Generation* generate_random_generation(Graph* graph) {
 
         for (int j = graph->size; j --> 0;) {
             uniform_int_distribution<> dist(0, j);
-            int v = dist(gen);
+            int v = dist(*get_wersenne_twister());
 
             cycle[graph->size - j - 1] = vertices[v];
             vertices.erase(vertices.begin() + v);

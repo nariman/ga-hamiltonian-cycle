@@ -13,6 +13,7 @@
 #include "ga.h"
 #include "cycle.h"
 #include "generation.h"
+#include "twister.h"
 
 using namespace std;
 
@@ -43,15 +44,10 @@ Generation* process(Generation* generation) {
         cumulative[i] = reversed[i - 1] + reversed[i] / sum_reversed;
     }
 
-    random_device random;
-    mt19937 gen(random());
-
-    gen.seed(time(0));
-
     // vector indices 2*N chromosomes for crossover or mutation
     for (int i = 0; i < 2 * generation->size; i++) {
         uniform_real_distribution<> dist(0, cumulative[generation->size - 1]);
-        double index = dist(gen);
+        double index = dist(*get_wersenne_twister());
 
         int l = 0;
         int r = generation->size - 1;
@@ -121,9 +117,7 @@ Cycle* crossover_split_one(Cycle* first, Cycle* second) {
         current_cycle->vertices[i] = first->vertices[i];
     }
 
-    if (split_index == 0) {
-        current_cycle->mutate();
-    } else {
+    if (split_index != 0) {
         for (int i = 0; i < split_index; i++) {
             int temp_gen = second->vertices[i];
             for (int k = split_index; k < first->graph->size; k++) {
