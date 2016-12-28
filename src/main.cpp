@@ -1,3 +1,8 @@
+/*
+ * Genetic Algorithm for a Travelling Salesman Problem.
+ * Hamiltonian Cycle problem.
+ */
+
 #include <iostream>
 #include <signal.h>
 #include <stdio.h>
@@ -5,9 +10,11 @@
 #include <ctime>
 #include <random>
 
+#include "cycle.h"
 #include "ga.h"
+#include "generation.h"
 #include "generator.h"
-#include "structures.h"
+#include "graph.h"
 
 using namespace std;
 
@@ -19,16 +26,15 @@ void inthand(int signum) {
 }
 
 int main() {
-
     signal(SIGINT, inthand); //CTRL + C = STOP
 
     Graph* graph = generate_random_graph(20, 1000);
-    graph->print();
+    graph->repr();
 
     cout << endl << endl;
 
-    Generation *gen = generate_random_generation_by_greedy_strategy(graph);
-    gen->print();
+    Generation *gen = generate_random_generation(graph);
+    gen->repr();
 
     cout << endl << endl;
 
@@ -40,7 +46,7 @@ int main() {
 
          cout <<"end " << count << " step" << endl;
 
-         gen->print();
+         gen->repr();
          cout << endl;
      }
 

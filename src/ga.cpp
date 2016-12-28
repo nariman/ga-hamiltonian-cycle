@@ -1,3 +1,8 @@
+/*
+ * Genetic Algorithm for a Travelling Salesman Problem.
+ * Hamiltonian Cycle problem.
+ */
+
 #include <algorithm>
 #include <cmath>
 #include <ctime>
@@ -5,8 +10,9 @@
 #include <random>
 #include <vector>
 
-#include "structures.h"
 #include "ga.h"
+#include "cycle.h"
+#include "generation.h"
 
 using namespace std;
 
@@ -19,8 +25,8 @@ Generation* process(Generation* generation) {
 
     double cumulative[generation->size];
 
-    vector<HamiltonianCycle*> selected_chromosomes;
-    HamiltonianCycle** new_cycles = new HamiltonianCycle*[generation->size];
+    vector<Cycle*> selected_chromosomes;
+    Cycle** new_cycles = new Cycle*[generation->size];
 
     for (int i = 0; i < generation->size; i++) {
         sum_length += generation->cycles[i]->length;
@@ -66,7 +72,7 @@ Generation* process(Generation* generation) {
     cout << endl << "SELECTED: " << endl;
 
     for (size_t i = 0; i < selected_chromosomes.size(); i++) {
-        selected_chromosomes[i]->print();
+        selected_chromosomes[i]->repr();
         cout << endl;
     }
 
@@ -76,7 +82,7 @@ Generation* process(Generation* generation) {
     // generate a new generation (N)
     for (int i = 0; i < generation->size; i++) {
         new_cycles[i] = crossover(selected_chromosomes[2 * i], selected_chromosomes[2 * i + 1]);
-        new_cycles[i]->print();
+        new_cycles[i]->repr();
         cout << endl;
     }
 
@@ -89,12 +95,11 @@ Generation* process(Generation* generation) {
     return new Generation(new_size, new_cycles);
 }
 
-HamiltonianCycle* crossover(HamiltonianCycle* first, HamiltonianCycle* second) {
+Cycle* crossover(Cycle* first, Cycle* second) {
     return crossover_split_one(first, second);
 }
 
-HamiltonianCycle* crossover_split_one(HamiltonianCycle* first, 
-                                      HamiltonianCycle* second) {
+Cycle* crossover_split_one(Cycle* first, Cycle* second) {
     int split_index = -1;
 
     for (int j = 0; j < second->graph->size; j++) {
@@ -110,7 +115,7 @@ HamiltonianCycle* crossover_split_one(HamiltonianCycle* first,
         }
     }
 
-    HamiltonianCycle* current_cycle = new HamiltonianCycle(first->graph);
+    Cycle* current_cycle = new Cycle(first->graph);
 
     for (int i = 0; i < first->graph->size; i++) {
         current_cycle->vertices[i] = first->vertices[i];

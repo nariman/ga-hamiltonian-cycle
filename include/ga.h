@@ -1,15 +1,19 @@
+/*
+ * Genetic Algorithm for a Travelling Salesman Problem.
+ * Hamiltonian Cycle problem.
+ */
+
 #ifndef GA_HAMILTONIAN_CYCLE_GA_H
 #define GA_HAMILTONIAN_CYCLE_GA_H
 
-#include "structures.h"
+#include "cycle.h"
+#include "generation.h"
+
 
 Generation* process(Generation* generation);
 
-HamiltonianCycle* crossover(HamiltonianCycle* first, HamiltonianCycle* second);
+Cycle* crossover(Cycle* first, Cycle* second);
 
-HamiltonianCycle* crossover_split_one(HamiltonianCycle* first, 
-                                      HamiltonianCycle* second);
-
-void mutation(HamiltonianCycle* cycle);
+Cycle* crossover_split_one(Cycle* first, Cycle* second);
 
 #endif //GA_HAMILTONIAN_CYCLE_GA_H

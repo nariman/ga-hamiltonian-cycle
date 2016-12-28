@@ -1,7 +1,14 @@
+/*
+ * Genetic Algorithm for a Travelling Salesman Problem.
+ * Hamiltonian Cycle problem.
+ */
+
 #ifndef GA_HAMILTONIAN_CYCLE_GENERATOR_H
 #define GA_HAMILTONIAN_CYCLE_GENERATOR_H
 
-#include "structures.h"
+#include "generation.h"
+#include "graph.h"
+
 
 /**
  * Generates a new graph with random weights.
@@ -14,12 +21,12 @@
 Graph* generate_random_graph(int size, long max_weight);
 
 /**
- * Generates a new generation by the greedy strategy.
+ * Generates a new generation by the random strategy.
  * 
  * @param graph Graph, on which generation will be generated
  *
  * @return Generated generation
  */
-Generation* generate_random_generation_by_greedy_strategy(Graph* graph);
+Generation* generate_random_generation(Graph* graph);
 
 #endif //GA_HAMILTONIAN_CYCLE_GENERATOR_H
