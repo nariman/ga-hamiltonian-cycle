@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <signal.h>
 
-
 #include "structures.h"
 #include "generator.h"
 #include "ga.h"
@@ -19,7 +18,6 @@ volatile sig_atomic_t stop;
 void inthand(int signum) {
     stop = 1;
 }
-
 
 int main() {
 
@@ -34,7 +32,7 @@ int main() {
     gen->print();
 
     while (!stop) {
-        gen = process(gen);
+        // gen = process(gen);
     }
 
     cout << "We're here";
