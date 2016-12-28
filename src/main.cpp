@@ -1,17 +1,14 @@
-/*
- * Main logic
- */
-
 #include <iostream>
-#include <unistd.h>
-#include <stdio.h>
 #include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
 
-#include "structures.h"
-#include "generator.h"
 #include "ga.h"
+#include "generator.h"
+#include "structures.h"
 
 using namespace std;
+
 
 volatile sig_atomic_t stop;
 
@@ -23,17 +20,19 @@ int main() {
 
     signal(SIGINT, inthand); //CTRL + C = STOP
 
-    Graph *graph = generate(10, 1000);
+    Graph* graph = generate_random_graph(10, 1000);
     graph->print();
 
-    cout << endl;
+    cout << endl << endl;
 
-    Generation *gen = greedy(graph);
+    Generation *gen = generate_random_generation_by_greedy_strategy(graph);
     gen->print();
 
-    while (!stop) {
-        // gen = process(gen);
-    }
+    cout << endl << endl;
+
+    // while (!stop) {
+    //     // gen = process(gen);
+    // }
 
     cout << "We're here";
 

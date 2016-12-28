@@ -1,11 +1,7 @@
-/*
- * Algorithms
- */
-
-#include <iostream>
 #include <algorithm>
-#include <ctime>
 #include <cmath>
+#include <ctime>
+#include <iostream>
 #include <random>
 #include <vector>
 
@@ -14,33 +10,6 @@
 
 using namespace std;
 
-Generation *greedy(Graph *graph) {
-    random_device random;
-    mt19937 gen(random());
-
-    gen.seed(time(0));
-
-    HamiltonianCycle **cycles = new HamiltonianCycle *[(int) log((double) graph->size)];
-
-    for (int i = 0; i < (int) log((double) graph->size); i++) {
-        int *cycle = new int[graph->size];
-        vector<int> vertices;
-
-        for (int j = 1; j <= graph->size; vertices.push_back(j++));
-
-        for (int j = graph->size; j-- > 0;) {
-            uniform_int_distribution<> dist(0, j);
-            int v = dist(gen);
-
-            cycle[graph->size - j - 1] = vertices[v];
-            vertices.erase(vertices.begin() + v);
-        }
-
-        cycles[i] = new HamiltonianCycle(graph, cycle);
-    }
-
-    return new Generation((int) log((double) graph->size), cycles);
-}
 
 Generation *process(Generation *generation) {
 
@@ -138,4 +107,3 @@ HamiltonianCycle &crossover(HamiltonianCycle &first_chromosome, HamiltonianCycle
      */
 
 }
-
