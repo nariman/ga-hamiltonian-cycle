@@ -10,6 +10,6 @@ HamiltonianCycle* crossover(HamiltonianCycle* first, HamiltonianCycle* second);
 HamiltonianCycle* crossover_split_one(HamiltonianCycle* first, 
                                       HamiltonianCycle* second);
 
-HamiltonianCycle* mutation(HamiltonianCycle* cycle);
+void mutation(HamiltonianCycle* cycle);
 
 #endif //GA_HAMILTONIAN_CYCLE_GA_H

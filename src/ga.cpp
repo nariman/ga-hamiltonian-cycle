@@ -8,8 +8,6 @@
 #include "structures.h"
 #include "ga.h"
 
-#define MUTATION_PROBABILITY 15
-
 using namespace std;
 
 
@@ -65,40 +63,31 @@ Generation* process(Generation* generation) {
         selected_chromosomes.push_back(generation->cycles[l]);
     }
 
+    cout << endl << "SELECTED: " << endl;
+
+    for (size_t i = 0; i < selected_chromosomes.size(); i++) {
+        selected_chromosomes[i]->print();
+        cout << endl;
+    }
+
+    cout << endl;
+    cout <<  "CROSSOVERED: " << endl;
+
     // generate a new generation (N)
-    for (int i = 0; i < 2 * generation->size; i += 2) {
-        new_cycles[i] = crossover(selected_chromosomes[i], selected_chromosomes[i + 1]);
+    for (int i = 0; i < generation->size; i++) {
+        new_cycles[i] = crossover(selected_chromosomes[2 * i], selected_chromosomes[2 * i + 1]);
+        new_cycles[i]->print();
+        cout << endl;
     }
 
-    return new Generation(generation->size, new_cycles);
+    cout << endl;
+
+    int new_size = generation->size;
+    // TODO: Delete all chromosomes
+    delete generation;
+
+    return new Generation(new_size, new_cycles);
 }
-
-/*
-* plan:
-*
-* 1) proportional line for current generation +
-* 2) new generation = 2N chromosomes +
-* 3) new_cycles = crossover (N with each other)
-* 4) reutrn Generation
-*
-* 5*) myabe selection again? Or no..
-*
-*
-*
-*
-*/
-
-/*{
-
-    HamiltonianCycle* temp;
-
-    int change_method = rand(1..4)
-    1 = 1-razrez
-    2 = 2-razrez
-    3 = 1-swap
-    4 = k-swap
-    }
-    */
 
 HamiltonianCycle* crossover(HamiltonianCycle* first, HamiltonianCycle* second) {
     return crossover_split_one(first, second);
@@ -106,46 +95,43 @@ HamiltonianCycle* crossover(HamiltonianCycle* first, HamiltonianCycle* second) {
 
 HamiltonianCycle* crossover_split_one(HamiltonianCycle* first, 
                                       HamiltonianCycle* second) {
-    
-}
+    int split_index = -1;
 
-HamiltonianCycle* mutation(HamiltonianCycle* cycle) {
-    random_device random;
-    mt19937 gen(random());
-
-    gen.seed(time(0));
-
-    uniform_int_distribution<> dist(0, 100);
-
-    if (dist(gen) <= MUTATION_PROBABILITY) {
-        // We choose log(cycle->graph->size) vertices from cycle
-        int log_size = (int) log((double) cycle->graph->size);
-
-        int selected_gens[log_size];
-        vector<int> vertices;
-
-        for (int i = 0; i < cycle->graph->size; vertices.push_back(i++));
-
-        for (int i = log_size; i --> 0;) {
-            uniform_int_distribution<> dist(0, vertices.size());
-            int v = dist(gen);
-
-            selected_gens[cycle->graph->size - i - 1] = vertices[v];
-            vertices.erase(vertices.begin() + v);
+    for (int j = 0; j < second->graph->size; j++) {
+        for (int i = 0; i <= j; i++) {
+            if (first->vertices[i] == second->vertices[j]) {
+                split_index = j;
+                break;
+            }
         }
 
-        sort(selected_gens, selected_gens + log_size);
-
-        int v = selected_gens[0];
-
-        for (int i = 1; i < log_size; i++) {
-            int t = cycle->vertices[selected_gens[i]];
-            cycle->vertices[selected_gens[i]] = v;
-            v = t;
+        if (split_index != -1) {
+            break;
         }
-
-        selected_gens[0] = v;
     }
 
-    return cycle;
+    HamiltonianCycle* current_cycle = new HamiltonianCycle(first->graph);
+
+    for (int i = 0; i < first->graph->size; i++) {
+        current_cycle->vertices[i] = first->vertices[i];
+    }
+
+    if (split_index == 0) {
+        current_cycle->mutate();
+    } else {
+        for (int i = 0; i < split_index; i++) {
+            int temp_gen = second->vertices[i];
+            for (int k = split_index; k < first->graph->size; k++) {
+                if (first->vertices[k] == temp_gen) {
+                    current_cycle->vertices[k] = first->vertices[i];
+                    current_cycle->vertices[i] = temp_gen;
+                    break;
+                }
+            }
+        }
+    }
+
+    current_cycle->recalc();
+    current_cycle->mutate();
+    return current_cycle;
 }

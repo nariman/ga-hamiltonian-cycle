@@ -52,5 +52,5 @@ Generation* generate_random_generation_by_greedy_strategy(Graph* graph) {
         cycles[i] = new HamiltonianCycle(graph, cycle);
     }
 
-    return new Generation((int) log((double) graph->size), cycles);
+    return new Generation(log_size, cycles);
 }

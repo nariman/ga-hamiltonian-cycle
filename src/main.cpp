@@ -2,6 +2,8 @@
 #include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <ctime>
+#include <random>
 
 #include "ga.h"
 #include "generator.h"
@@ -20,7 +22,7 @@ int main() {
 
     signal(SIGINT, inthand); //CTRL + C = STOP
 
-    Graph* graph = generate_random_graph(10, 1000);
+    Graph* graph = generate_random_graph(20, 1000);
     graph->print();
 
     cout << endl << endl;
@@ -30,9 +32,17 @@ int main() {
 
     cout << endl << endl;
 
-    // while (!stop) {
-    //     // gen = process(gen);
-    // }
+    int count = 0;
+     while (!stop) {
+         cout <<"begin " << ++count << " step" << endl;
+         
+         gen = process(gen);
+
+         cout <<"end " << count << " step" << endl;
+
+         gen->print();
+         cout << endl;
+     }
 
     cout << "We're here";
 

@@ -40,6 +40,13 @@ public:
     int* vertices; // In this list, the last repeated vertex is not 
                    // neccessary.
 
+/**
+     * Create a new hamiltonian cycle with provided graph object.
+     *
+     * @param graph Graph, on which was built the cycle
+     */
+
+    HamiltonianCycle(Graph* graph);
     /**
      * Create a new hamiltonian cycle with provided graph object and
      * list of vertices in the cycle.
@@ -54,6 +61,12 @@ public:
      * of vertices.
      */
      ~HamiltonianCycle();
+
+    // TODO:
+    void recalc();
+ 
+    // TODO: 
+    void mutate();
 
     /**
      * Print to the standart I/O a human-readable hamiltonian cycle
