@@ -28,7 +28,7 @@ void inthand(int signum) {
 int main() {
     signal(SIGINT, inthand); //CTRL + C = STOP
 
-    Graph* graph = generate_random_graph(10, 1000);
+    Graph* graph = generate_random_graph(100, 1000);
     graph->repr();
 
     cout << endl << endl;
@@ -40,14 +40,9 @@ int main() {
 
     int count = 0;
      while (!stop) {
-         cout <<"begin " << ++count << " step" << endl;
-         
+        //  cout << "Generation #" << ++count << endl;
          gen = process(gen);
-
-         cout <<"end " << count << " step" << endl;
-
-         gen->repr();
-         cout << endl;
+         cout << "- best len is " << gen->best()->length << endl << endl;
      }
 
     cout << "We're here";

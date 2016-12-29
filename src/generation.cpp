@@ -19,6 +19,18 @@ Generation::~Generation() {
     delete this->cycles;
 }
 
+Cycle* Generation::best() {
+    Cycle* best = cycles[0];
+
+    for (int i = 0; i < this->size; i++) {
+        if (best->length > this->cycles[i]->length) {
+            best = cycles[i];
+        }
+    }
+
+    return best;
+}
+
 void Generation::repr() {
     cout << "<Generation" << " ";
     cout << "size=" << this->size << " ";

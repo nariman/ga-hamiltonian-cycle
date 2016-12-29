@@ -18,77 +18,43 @@
 using namespace std;
 
 
-Generation* process(Generation* generation) {
-    long sum_length = 0;
+Cycle* tournament(Generation* generation) {
+    uniform_int_distribution<> dist(0, generation->size - 1);
 
-    double sum_reversed = 0;
-    double reversed[generation->size];
+    int tournament_size = generation->size;
+    Cycle** cycles = new Cycle*[tournament_size];
 
-    double cumulative[generation->size];
-
-    vector<Cycle*> selected_chromosomes;
-    Cycle** new_cycles = new Cycle*[generation->size];
-
-    for (int i = 0; i < generation->size; i++) {
-        sum_length += generation->cycles[i]->length;
+    for (int i = 0; i < tournament_size; i++) {
+        cycles[i] = generation->cycles[dist(*get_wersenne_twister())];
     }
 
-    for (int i = 0; i < generation->size; i++) {
-        reversed[i] = sum_length / generation->cycles[i]->length;
-        sum_reversed += reversed[i];
-    }
+    Cycle* best = cycles[0];
 
-    cumulative[0] = reversed[0] / sum_reversed;
-
-    for (int i = 1; i < generation->size; i++) {
-        cumulative[i] = reversed[i - 1] + reversed[i] / sum_reversed;
-    }
-
-    // vector indices 2*N chromosomes for crossover or mutation
-    for (int i = 0; i < 2 * generation->size; i++) {
-        uniform_real_distribution<> dist(0, cumulative[generation->size - 1]);
-        double index = dist(*get_wersenne_twister());
-
-        int l = 0;
-        int r = generation->size - 1;
-        int c = 0;
-
-        while (l < r) {
-            c = (l + r) >> 1;
-            if (index <= cumulative[c]) {
-                r = c;
-            } else {
-                l = c + 1;
-            }
+    for (int i = 1; i < tournament_size; i++) {
+        if (best->length > cycles[i]->length) {
+            best = cycles[i];
         }
-
-        selected_chromosomes.push_back(generation->cycles[l]);
     }
 
-    cout << endl << "SELECTED: " << endl;
+    return best;
+}
 
-    for (size_t i = 0; i < selected_chromosomes.size(); i++) {
-        selected_chromosomes[i]->repr();
-        cout << endl;
-    }
-
-    cout << endl;
-    cout <<  "CROSSOVERED: " << endl;
-
+Generation* process(Generation* generation) {
+    int generation_size = generation->size;
+    Cycle** new_cycles = new Cycle*[generation_size];
+    
     // generate a new generation (N)
-    for (int i = 0; i < generation->size; i++) {
-        new_cycles[i] = crossover(selected_chromosomes[2 * i], selected_chromosomes[2 * i + 1]);
-        new_cycles[i]->repr();
-        cout << endl;
+    for (int i = 0; i < generation_size; i++) {
+        Cycle* first = tournament(generation);
+        Cycle* second = tournament(generation);
+
+        new_cycles[i] = crossover(first, second);
     }
 
-    cout << endl;
-
-    int new_size = generation->size;
     // TODO: Delete all chromosomes
     delete generation;
 
-    return new Generation(new_size, new_cycles);
+    return new Generation(generation_size, new_cycles);
 }
 
 Cycle* crossover(Cycle* first, Cycle* second) {

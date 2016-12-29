@@ -9,6 +9,7 @@
 #include "cycle.h"
 #include "generation.h"
 
+Cycle* tournament(Generation* generation);
 
 Generation* process(Generation* generation);
 

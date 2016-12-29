@@ -29,6 +29,9 @@ public:
      */
      ~Generation();
 
+    // TODO:
+    Cycle* best();
+
     /**
      * Print to the standart I/O a human-readable generation
      * representation.

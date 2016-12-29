@@ -14,7 +14,7 @@
 #include "graph.h"
 #include "twister.h"
 
-#define MUTATION_PROBABILITY 65 // %
+#define MUTATION_PROBABILITY 1 // %
 
 using namespace std;
 
@@ -73,18 +73,6 @@ void Cycle::mutate() {
 
     sort(selected_gens, selected_gens + log_size);
 
-    for (int i = 0; i < log_size; i++) {
-        cout << selected_gens[i] << " ";
-    }
-
-    cout << endl;
-
-    for (int i = 0; i < this->graph->size; i++) {
-        cout << this->vertices[i] << " ";
-    }
-
-    cout << endl;
-
     int v = this->vertices[selected_gens[0]];
 
     for (int i = 1; i < log_size; i++) {
@@ -94,12 +82,6 @@ void Cycle::mutate() {
     }
 
     this->vertices[selected_gens[0]] = v;
-
-    for (int i = 0; i < this->graph->size; i++) {
-        cout << this->vertices[i] << " ";
-    }
-
-    cout << endl;
 
     this->mutations++;
     this->recalc();
