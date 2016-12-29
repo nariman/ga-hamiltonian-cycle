@@ -3,7 +3,7 @@
  * Hamiltonian Cycle problem.
  */
 
-#include <iostream> // cin, cout
+#include <iostream> // cout
 
 #include "generation.h"
 #include "cycle.h"
