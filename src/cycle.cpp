@@ -10,9 +10,6 @@
 #include "graph.h"
 #include "twister.h"
 
-#define MUTATION_PROBABILITY 25 // %
-#define MUTATION_SWAP_PROBABILITY 25 // %
-
 using namespace std;
 
 
@@ -45,15 +42,15 @@ void Cycle::recalc() {
     }
 }
 
-void Cycle::mutate() {
+void Cycle::mutate(int mutation_probability, int mutation_swap_probability) {
     uniform_int_distribution<> chance(0, 100);
 
-    if (chance(*get_mersenne_twister()) > MUTATION_PROBABILITY) {
+    if (chance(*get_mersenne_twister()) > mutation_probability) {
         return;
     }
 
     for (int i = 0; i < this->graph->size; i++) {
-        if (chance(*get_mersenne_twister()) > MUTATION_SWAP_PROBABILITY) {
+        if (chance(*get_mersenne_twister()) > mutation_swap_probability) {
             continue;
         }
 

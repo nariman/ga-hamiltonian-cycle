@@ -48,7 +48,7 @@ public:
     /**
      * Mutate the cycle (chromosome) with some probability.
      */
-    void mutate();
+    void mutate(int mutation_probability, int mutation_swap_probability);
 
     /**
      * Print to the standart I/O a human-readable hamiltonian cycle

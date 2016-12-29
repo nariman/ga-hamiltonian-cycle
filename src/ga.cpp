@@ -33,17 +33,26 @@ Cycle* tournament(Generation* generation) {
 
 Generation* process(Generation* generation) {
     int generation_size = generation->size;
+    Cycle* best = generation->best();
     Cycle** new_cycles = new Cycle*[generation_size];
+
+    new_cycles[0] = best;
     
     // generate a new generation (N)
-    for (int i = 0; i < generation_size; i++) {
+    for (int i = 1; i < generation_size; i++) {
         Cycle* first = tournament(generation);
         Cycle* second = tournament(generation);
 
         new_cycles[i] = crossover(first, second);
+        new_cycles[i]->mutate(generation->get_mutation_probability(),
+                              generation->get_mutation_swap_probability());
     }
 
     for (int i = 0; i < generation->size; i++) {
+        if (generation->cycles[i] == best) {
+            continue;
+        }
+
         delete generation->cycles[i];
     }
 
@@ -92,6 +101,5 @@ Cycle* crossover_split_one(Cycle* first, Cycle* second) {
     }
 
     current_cycle->recalc();
-    current_cycle->mutate();
     return current_cycle;
 }

@@ -10,6 +10,9 @@
 
 
 class Generation {
+private:
+    int mutation_probability;
+    int mutation_swap_probability;
 public:
     int size;
     Cycle** cycles;
@@ -35,6 +38,14 @@ public:
      * @return The best cycle
      */
     Cycle* best();
+
+    int get_mutation_probability();
+
+    int get_mutation_swap_probability();
+
+    void set_mutation_probability(int mutation_probability);
+
+    void set_mutation_swap_probability(int mutation_swap_probability);
 
     /**
      * Print to the standart I/O a human-readable generation
