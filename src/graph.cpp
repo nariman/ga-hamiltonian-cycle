@@ -3,7 +3,7 @@
  * Hamiltonian Cycle problem.
  */
 
-#include <iostream> // cin, cout
+#include <iostream> // cout
 
 #include "graph.h"
 
@@ -12,18 +12,22 @@ using namespace std;
 
 Graph::Graph(int size) {
     this->size = size;
-    this->matrix = new long*[size];
+    this->matrix = new double*[size];
 
-    for (int i = 0; i < size; this->matrix[i++] = new long[size]);
+    for (int i = 0; i < size; this->matrix[i++] = new double[size]);
 }
 
-Graph::Graph(int size, long** matrix) :
+Graph::Graph(int size, double** matrix) :
         size(size),
         matrix(matrix) {}
 
 Graph::~Graph() {
     for (int i = 0; i < size; delete this->matrix[i++]);
     delete this->matrix;
+}
+
+int Graph::population_size() {
+    return 50;
 }
 
 void Graph::repr() {

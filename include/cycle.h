@@ -14,7 +14,7 @@ private:
     int mutations;
 public:
     Graph* graph;
-    long length;
+    double length;
     int* vertices; // In this list, the last repeated vertex is not 
                    // neccessary.
 
@@ -40,10 +40,14 @@ public:
      */
      ~Cycle();
 
-    // TODO:
+    /**
+     * Recalculate the length of the path.
+     */
     void recalc();
  
-    // TODO: 
+    /**
+     * Mutate the cycle (chromosome) with some probability.
+     */
     void mutate();
 
     /**

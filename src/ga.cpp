@@ -3,17 +3,15 @@
  * Hamiltonian Cycle problem.
  */
 
-#include <algorithm>
-#include <cmath>
-#include <ctime>
-#include <iostream>
-#include <random>
-#include <vector>
+#include <algorithm> // sort
+#include <random> // uniform_int_distribution
 
 #include "ga.h"
 #include "cycle.h"
 #include "generation.h"
 #include "twister.h"
+
+#define TOURNAMENT_PROBABILITY 0 // %
 
 using namespace std;
 
@@ -21,22 +19,16 @@ using namespace std;
 Cycle* tournament(Generation* generation) {
     uniform_int_distribution<> dist(0, generation->size - 1);
 
-    int tournament_size = generation->size;
-    Cycle** cycles = new Cycle*[tournament_size];
+    Cycle* first = generation->cycles[dist(*get_mersenne_twister())];
+    Cycle* second = generation->cycles[dist(*get_mersenne_twister())];
 
-    for (int i = 0; i < tournament_size; i++) {
-        cycles[i] = generation->cycles[dist(*get_wersenne_twister())];
+    uniform_int_distribution<> chance(0, 100);
+
+    if (chance(*get_mersenne_twister()) > TOURNAMENT_PROBABILITY) {
+        return first->length < second->length ? first : second;  
+    } else {
+        return first->length < second->length ? second : first;  
     }
-
-    Cycle* best = cycles[0];
-
-    for (int i = 1; i < tournament_size; i++) {
-        if (best->length > cycles[i]->length) {
-            best = cycles[i];
-        }
-    }
-
-    return best;
 }
 
 Generation* process(Generation* generation) {
@@ -51,7 +43,10 @@ Generation* process(Generation* generation) {
         new_cycles[i] = crossover(first, second);
     }
 
-    // TODO: Delete all chromosomes
+    for (int i = 0; i < generation->size; i++) {
+        delete generation->cycles[i];
+    }
+
     delete generation;
 
     return new Generation(generation_size, new_cycles);

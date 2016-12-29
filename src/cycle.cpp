@@ -3,18 +3,15 @@
  * Hamiltonian Cycle problem.
  */
 
-#include <algorithm> // sort
-#include <cmath> // log
-#include <ctime> // time
-#include <iostream> // cin, cout
+#include <iostream> // cout
 #include <random> // uniform_int_distribution
-#include <vector> // vector
 
 #include "cycle.h"
 #include "graph.h"
 #include "twister.h"
 
-#define MUTATION_PROBABILITY 1 // %
+#define MUTATION_PROBABILITY 25 // %
+#define MUTATION_SWAP_PROBABILITY 25 // %
 
 using namespace std;
 
@@ -49,39 +46,25 @@ void Cycle::recalc() {
 }
 
 void Cycle::mutate() {
-    uniform_int_distribution<> dist(0, 100);
+    uniform_int_distribution<> chance(0, 100);
 
-    if (dist(*get_wersenne_twister()) > MUTATION_PROBABILITY) {
+    if (chance(*get_mersenne_twister()) > MUTATION_PROBABILITY) {
         return;
     }
 
-    // We choose log(this->graph->size) vertices from the cycle
-    int log_size = (int) log((double) this->graph->size);
+    for (int i = 0; i < this->graph->size; i++) {
+        if (chance(*get_mersenne_twister()) > MUTATION_SWAP_PROBABILITY) {
+            continue;
+        }
 
-    int selected_gens[log_size];
-    vector<int> vertices;
+        uniform_int_distribution<> dist(0, this->graph->size - 1);
+        int u = dist(*get_mersenne_twister());
+        int v = dist(*get_mersenne_twister());
 
-    for (int i = 0; i < this->graph->size; vertices.push_back(i++));
-
-    for (int i = log_size; i --> 0;) {
-        uniform_int_distribution<> dist(0, vertices.size() - 1);
-        int v = dist(*get_wersenne_twister()); 
-
-        selected_gens[log_size - i - 1] = vertices[v];
-        vertices.erase(vertices.begin() + v);
+        int s = this->vertices[u];
+        this->vertices[u] = this->vertices[v];
+        this->vertices[v] = s;
     }
-
-    sort(selected_gens, selected_gens + log_size);
-
-    int v = this->vertices[selected_gens[0]];
-
-    for (int i = 1; i < log_size; i++) {
-        int t = this->vertices[selected_gens[i]];
-        this->vertices[selected_gens[i]] = v;
-        v = t;
-    }
-
-    this->vertices[selected_gens[0]] = v;
 
     this->mutations++;
     this->recalc();

@@ -10,7 +10,7 @@
 class Graph {
 public:
     int size;
-    long** matrix;
+    double** matrix;
 
     /**
      * Create a new graph with provided size and set a default 
@@ -26,12 +26,19 @@ public:
      * @param size   Size of the graph (nubmer of vertices)
      * @param matrix Connectivity matrix 
      */
-    Graph(int size, long** matrix);
+    Graph(int size, double** matrix);
 
     /**
-     * Delete a graph and free memory, allocated to the matrix
+     * Delete a graph and free memory, allocated to the matrix.
      */
     ~Graph();
+
+    /**
+     * Return the population size, based on the some graph characteristics.
+     *
+     * @return Population size
+     */
+    int population_size();
 
     /**
      * Print to the standart I/O a human-readable graph representation.

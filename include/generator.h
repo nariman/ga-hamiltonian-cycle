@@ -18,7 +18,7 @@
  *
  * @return Generated graph
  */
-Graph* generate_random_graph(int size, long max_weight);
+Graph* generate_random_graph(int size, double max_weight);
 
 /**
  * Generates a new generation by the random strategy.

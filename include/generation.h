@@ -29,7 +29,11 @@ public:
      */
      ~Generation();
 
-    // TODO:
+    /**
+     * Return the best cycle (crhomosome) in the generation.
+     *
+     * @return The best cycle
+     */
     Cycle* best();
 
     /**
